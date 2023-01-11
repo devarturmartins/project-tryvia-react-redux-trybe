@@ -26,13 +26,14 @@ class Login extends Component {
     const responseAPI = await fetch('https://opentdb.com/api_token.php?command=request');
     const responseJson = await responseAPI.json();
     const { token } = responseJson;
+
     localStorage.setItem('token', token);
     history.push('/game');
   };
   
   render() {
     const { name, email } = this.state;
-   
+  
     return (
       <form>
         <label htmlFor="name">
@@ -71,6 +72,7 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  history: PropTypes.
 };
 
 export default connect()(Login);
