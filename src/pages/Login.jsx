@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { personal } from '../redux/actions/index';
+import { tokenAPI } from '../services/fetchAPI';
 // import { searchToken } from '../services/api';
 
 class Login extends Component {
@@ -15,25 +16,18 @@ class Login extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { dispatch } = this.props;
     dispatch(personal(this.state));
-  };
-
-  searchToken = async () => {
     const { history } = this.props;
-  
-    const responseAPI = await fetch('https://opentdb.com/api_token.php?command=request');
-    const responseJson = await responseAPI.json();
+    const responseJson = await tokenAPI();
     const { token } = responseJson;
-
     localStorage.setItem('token', token);
     history.push('/game');
   };
-  
+
   render() {
     const { name, email } = this.state;
-  
     return (
       <form>
         <label htmlFor="name">
@@ -59,7 +53,7 @@ class Login extends Component {
         <button
           data-testid="btn-play"
           type="button"
-          onClick={ this.searchToken }
+          onClick={ this.handleSubmit }
           disabled={ email.length === 0 || name.length === 0 }
         >
           Play
@@ -72,7 +66,7 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  history: PropTypes.
+  history: PropTypes.func.isRequired,
 };
 
 export default connect()(Login);
