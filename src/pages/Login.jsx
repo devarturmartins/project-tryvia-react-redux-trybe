@@ -16,7 +16,7 @@ class Login extends Component {
 
   handleSubmit = () => {
     const { dispatch } = this.props;
-    dispatch(personal());
+    dispatch(personal(this.state));
   };
 
   render() {
@@ -46,7 +46,7 @@ class Login extends Component {
         <button
           data-testid="btn-play"
           type="button"
-          onSubmit={ this.handleSubmit }
+          onClick={ this.handleSubmit }
           disabled={ email.length === 0 || name.length === 0 }
         >
           Play
