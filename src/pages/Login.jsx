@@ -47,7 +47,7 @@ class Login extends Component {
         <button
           data-testid="btn-play"
           type="button"
-          onClick={ this.searchToken }
+          onClick={ this.searchToken() }
           disabled={ email.length === 0 || name.length === 0 }
         >
           Play
