@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { personal } from '../redux/actions/index';
+import { searchToken } from '../services/api';
 
 class Login extends Component {
   state = {
@@ -46,7 +47,7 @@ class Login extends Component {
         <button
           data-testid="btn-play"
           type="button"
-          onClick={ this.handleSubmit }
+          onClick={ this.searchToken }
           disabled={ email.length === 0 || name.length === 0 }
         >
           Play
