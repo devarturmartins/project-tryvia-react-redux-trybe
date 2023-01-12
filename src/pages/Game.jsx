@@ -8,3 +8,4 @@ export default class Game extends Component {
     );
   }
 }
+
