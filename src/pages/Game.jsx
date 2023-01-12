@@ -1,11 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Header from '../components/Header';
 import QuestionsAndAnswers from '../components/ QuestionsAndAnswers';
 
-export default class Game extends Component {
+class Game extends React.Component {
   render() {
     return (
-      <QuestionsAndAnswers />
+      <>
+        <Header />
+        <QuestionsAndAnswers />
+      </>
     );
   }
 }
+
+export default Game;
 
