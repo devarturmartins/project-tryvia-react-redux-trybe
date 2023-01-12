@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
+import QuestionsAndAnswers from '../components/ QuestionsAndAnswers';
 
-class Game extends Component {
+export default class Game extends Component {
   render() {
     return (
-      <div>
-        Game
-      </div>
+      <QuestionsAndAnswers />
     );
   }
 }
 
-export default Game;

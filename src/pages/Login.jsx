@@ -17,9 +17,8 @@ class Login extends Component {
   };
 
   handleSubmit = async () => {
-    const { dispatch } = this.props;
+    const { history, dispatch } = this.props;
     dispatch(personal(this.state));
-    const { history } = this.props;
     const responseJson = await tokenAPI();
     const { token } = responseJson;
     localStorage.setItem('token', token);
