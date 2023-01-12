@@ -26,40 +26,56 @@ class Login extends Component {
     history.push('/game');
   };
 
+  redirect = () => {
+    const { history } = this.props;
+    history.push('/settings');
+  };
+
   render() {
     const { name, email } = this.state;
     return (
-      <form>
-        <label htmlFor="name">
-          <input
-            id="name"
-            type="text"
-            name="name"
-            value={ name }
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          <input
-            data-testid="input-gravatar-email"
-            id="email"
-            name="email"
-            type="email"
-            value={ email }
-            onChange={ this.handleChange }
-          />
-        </label>
+      <div>
         <button
-          data-testid="btn-play"
           type="button"
-          onClick={ this.handleSubmit }
-          disabled={ email.length === 0 || name.length === 0 }
+          data-testid="btn-settings"
+          id="btnSettings"
+          className="btnSettings"
+          onClick={ () => this.redirect() }
         >
-          Play
+          ⚙️
         </button>
+        <form>
+          <label htmlFor="name">
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value={ name }
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email">
+            <input
+              data-testid="input-gravatar-email"
+              id="email"
+              name="email"
+              type="email"
+              value={ email }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <button
+            data-testid="btn-play"
+            type="button"
+            onClick={ this.handleSubmit }
+            disabled={ email.length === 0 || name.length === 0 }
+          >
+            Play
+          </button>
 
-      </form>
+        </form>
+      </div>
     );
   }
 }
