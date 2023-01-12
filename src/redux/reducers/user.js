@@ -9,7 +9,7 @@ const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case PERSONAL:
     return {
-      ...state, user: { ...action.payload },
+      ...state, ...action.payload.personalInfo,
     };
   default:
     return state;
