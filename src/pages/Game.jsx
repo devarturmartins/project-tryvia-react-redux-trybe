@@ -4,7 +4,7 @@ import QuestionsAndAnswers from '../components/ QuestionsAndAnswers';
 export default class Game extends Component {
   render() {
     return (
-      <QuestionsAndAnswers />
+      <QuestionsAndAnswers data={ this.props } />
     );
   }
 }

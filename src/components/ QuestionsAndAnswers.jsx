@@ -6,6 +6,7 @@ class QuestionsAndAnswers extends Component {
   state = {
     game: '',
     loading: false,
+    index: 0,
   };
 
   componentDidMount() {
@@ -13,20 +14,31 @@ class QuestionsAndAnswers extends Component {
   }
 
   apiRequest = async () => {
-    const { history } = this.props;
     this.setState({ loading: true });
     const token = localStorage.getItem('token');
     const game = await questionsApi(token);
     if (game.response_code !== 0) {
+      const { data } = this.props;
+      const { history } = data;
       this.setState({ loading: false });
       localStorage.setItem('token', '');
       history.push('/');
+    } else {
+      this.setState({ game, loading: false }, () => this.criarBotõesAleatorios());
     }
-    this.setState({ game, loading: false });
+  };
+
+  criarBotõesAleatorios = () => {
+    const { index, game } = this.state;
+    const { results } = game;
+    const arrayDeIncorretos = results?.[index].incorrect_answers;
+    const arrayDeCorretos = results?.[index].correct_answer;
+    const allArrays = [...arrayDeIncorretos, arrayDeCorretos];
+    console.log(allArrays);
   };
 
   render() {
-    const { game, loading } = this.state;
+    const { game, loading, index } = this.state;
     const { results } = game;
     return (
       <div>
@@ -34,15 +46,17 @@ class QuestionsAndAnswers extends Component {
           loading && (<p>Carregando...</p>)
         }
         {
-          results?.map((e) => (
-            <div key={ e.question }>
-              <p data-testid="question-category">
-                { e.category }
-              </p>
-              <p data-testid="question-text">
-                { e.question }
-              </p>
-            </div>
+          results?.map((e, i) => (
+            i === index && (
+              <div key={ e.question }>
+                <p data-testid="question-category">
+                  { e.category }
+                </p>
+                <p data-testid="question-text">
+                  { e.question }
+                </p>
+              </div>
+            )
 
           ))
         }
