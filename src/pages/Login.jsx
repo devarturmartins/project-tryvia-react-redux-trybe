@@ -22,7 +22,7 @@ class Login extends Component {
 
   searchToken = async () => {
     const { history } = this.props;
-  
+
     const responseAPI = await fetch('https://opentdb.com/api_token.php?command=request');
     const responseJson = await responseAPI.json();
     const { token } = responseJson;
@@ -30,10 +30,10 @@ class Login extends Component {
     localStorage.setItem('token', token);
     history.push('/game');
   };
-  
+
   render() {
     const { name, email } = this.state;
-  
+
     return (
       <form>
         <label htmlFor="name">
@@ -72,7 +72,7 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  history: PropTypes.
+  history: PropTypes.shape.isRequired,
 };
 
 export default connect()(Login);
