@@ -65,7 +65,7 @@ class QuestionsAndAnswers extends Component {
     }), () => this.criarBotõesAleatorios());
   };
 
-  // Testando
+  // Requisito 8
   startTimer = () => {
     this.intervalId = setInterval(() => {
       const { second } = this.state;
