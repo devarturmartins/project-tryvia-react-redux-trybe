@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { questionsApi } from '../services/fetchAPI';
+// import Timer from './Timer';
+
+const ONE_SECOND = 1000;
+const ZERO = 0;
 
 class QuestionsAndAnswers extends Component {
   state = {
@@ -8,10 +12,12 @@ class QuestionsAndAnswers extends Component {
     loading: false,
     index: 0,
     random: [],
+    second: 30,
   };
 
   componentDidMount() {
     this.apiRequest();
+    this.startTimer();
   }
 
   apiRequest = async () => {
@@ -72,8 +78,20 @@ class QuestionsAndAnswers extends Component {
     }
   };
 
+  // Requisito 8
+  startTimer = () => {
+    this.intervalId = setInterval(() => {
+      const { second } = this.state;
+      if (second === ZERO) {
+        clearInterval(this.intervalId);
+        return;
+      }
+      this.setState((prevState) => ({ second: prevState.second - 1 }));
+    }, ONE_SECOND);
+  };
+
   render() {
-    const { game, loading, index, random } = this.state;
+    const { game, loading, index, random, second } = this.state;
     const { results } = game;
     return (
       <div>
@@ -104,6 +122,7 @@ class QuestionsAndAnswers extends Component {
                   onClick={ this.decorateQuestion }
                   type="button"
                   data-testid="correct-answer"
+                  disabled={ second === ZERO }
                   className="correct"
                 >
                   { e }
@@ -114,6 +133,7 @@ class QuestionsAndAnswers extends Component {
                   onClick={ this.decorateQuestion }
                   type="button"
                   data-testid={ `wrong-answer-${index}` }
+                  disabled={ second === ZERO }
                   className="incorrect"
                 >
                   { e }
@@ -121,6 +141,11 @@ class QuestionsAndAnswers extends Component {
               )
             ))
           }
+          {/* <p><Timer /></p> */}
+          <p>
+            Timer:
+            {second}
+          </p>
         </div>
       </div>
     );
