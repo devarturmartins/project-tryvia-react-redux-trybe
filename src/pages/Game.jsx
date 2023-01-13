@@ -7,7 +7,7 @@ class Game extends React.Component {
     return (
       <>
         <Header />
-        <QuestionsAndAnswers />
+        <QuestionsAndAnswers data={ this.props } />
       </>
     );
   }
