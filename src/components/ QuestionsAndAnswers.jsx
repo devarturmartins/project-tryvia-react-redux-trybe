@@ -49,7 +49,6 @@ class QuestionsAndAnswers extends Component {
     const arrayDeIncorretos = results?.[index].incorrect_answers;
     const arrayDeCorretos = results?.[index].correct_answer;
     const allArrays = [...arrayDeIncorretos, arrayDeCorretos];
-    console.log(allArrays);
     const arrayEmbaralhado = this.shuffle(allArrays);
     this.setState({ random: arrayEmbaralhado });
   };
@@ -83,24 +82,41 @@ class QuestionsAndAnswers extends Component {
 
           ))
         }
-        {
-          random.map((e) => (
-            <button
-              type="button"
-              onClick={ this.nextQuestion }
-            >
-              { e }
-            </button>
-          ))
-        }
+        <div data-testid="answer-options">
+          {
+            random.map((e, ind) => (
+              e === game.results[index].correct_answer ? (
+                <button
+                  key={ ind }
+                  onClick={ this.nextQuestion }
+                  type="button"
+                  data-testid="correct-answer"
+                >
+                  { e }
+                </button>
+              ) : (
+                <button
+                  key={ ind }
+                  onClick={ this.nextQuestion }
+                  type="button"
+                  data-testid={ `wrong-answer-${index}` }
+                >
+                  { e }
+                </button>
+              )
+            ))
+          }
+        </div>
       </div>
     );
   }
 }
 
 QuestionsAndAnswers.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
   }).isRequired,
 };
 
