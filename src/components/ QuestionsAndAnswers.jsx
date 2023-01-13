@@ -53,11 +53,11 @@ class QuestionsAndAnswers extends Component {
     this.setState({ random: arrayEmbaralhado });
   };
 
-  nextQuestion = () => {
-    this.setState((prev) => ({
-      index: prev.index + 1,
-    }), () => this.criarBotõesAleatorios());
-  };
+  // nextQuestion = () => {
+  //   this.setState((prev) => ({
+  //     index: prev.index + 1,
+  //   }), () => this.criarBotõesAleatorios());
+  // };
 
   decorateQuestion = (e) => {
     const answer = e.target;
