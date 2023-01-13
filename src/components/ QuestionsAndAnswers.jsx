@@ -7,6 +7,7 @@ class QuestionsAndAnswers extends Component {
     game: '',
     loading: false,
     index: 0,
+    random: [],
   };
 
   componentDidMount() {
@@ -28,6 +29,20 @@ class QuestionsAndAnswers extends Component {
     }
   };
 
+  shuffle = (array) => {
+    let random;
+    let target;
+    let i;
+    for (i = array.length - 1; i > 0; i -= 1) {
+      random = Math.floor(Math.random() * (i + 1));
+      target = array[i];
+      array[i] = array[random];
+      array[random] = target;
+      // [array[i], array[random]] = [array[random], array[i]];
+    }
+    return array;
+  };
+
   criarBotõesAleatorios = () => {
     const { index, game } = this.state;
     const { results } = game;
@@ -35,10 +50,18 @@ class QuestionsAndAnswers extends Component {
     const arrayDeCorretos = results?.[index].correct_answer;
     const allArrays = [...arrayDeIncorretos, arrayDeCorretos];
     console.log(allArrays);
+    const arrayEmbaralhado = this.shuffle(allArrays);
+    this.setState({ random: arrayEmbaralhado });
+  };
+
+  nextQuestion = () => {
+    this.setState((prev) => ({
+      index: prev.index + 1,
+    }), () => this.criarBotõesAleatorios());
   };
 
   render() {
-    const { game, loading, index } = this.state;
+    const { game, loading, index, random } = this.state;
     const { results } = game;
     return (
       <div>
@@ -50,14 +73,24 @@ class QuestionsAndAnswers extends Component {
             i === index && (
               <div key={ e.question }>
                 <p data-testid="question-category">
-                  { e.category }
+                  {e.category}
                 </p>
                 <p data-testid="question-text">
-                  { e.question }
+                  {e.question}
                 </p>
               </div>
             )
 
+          ))
+        }
+        {
+          random.map((e) => (
+            <button
+              type="button"
+              onClick={ this.nextQuestion }
+            >
+              { e }
+            </button>
           ))
         }
       </div>
