@@ -53,10 +53,23 @@ class QuestionsAndAnswers extends Component {
     this.setState({ random: arrayEmbaralhado });
   };
 
-  nextQuestion = () => {
-    this.setState((prev) => ({
-      index: prev.index + 1,
-    }), () => this.criarBotõesAleatorios());
+  // nextQuestion = () => {
+  //   this.setState((prev) => ({
+  //     index: prev.index + 1,
+  //   }), () => this.criarBotõesAleatorios());
+  // };
+
+  decorateQuestion = (e) => {
+    const answer = e.target;
+    const incorretas = document.querySelectorAll('.incorrect');
+    const corretas = document.querySelectorAll('.correct');
+    if (answer.classList.contains('correct')) {
+      answer.style.border = '3px solid rgb(6, 240, 15)';
+      incorretas.forEach((each) => { each.style.border = '3px solid red'; });
+    } else {
+      corretas[0].style.border = '3px solid rgb(6, 240, 15)';
+      incorretas.forEach((each) => { each.style.border = '3px solid red'; });
+    }
   };
 
   render() {
@@ -88,18 +101,20 @@ class QuestionsAndAnswers extends Component {
               e === game.results[index].correct_answer ? (
                 <button
                   key={ ind }
-                  onClick={ this.nextQuestion }
+                  onClick={ this.decorateQuestion }
                   type="button"
                   data-testid="correct-answer"
+                  className="correct"
                 >
                   { e }
                 </button>
               ) : (
                 <button
                   key={ ind }
-                  onClick={ this.nextQuestion }
+                  onClick={ this.decorateQuestion }
                   type="button"
                   data-testid={ `wrong-answer-${index}` }
+                  className="incorrect"
                 >
                   { e }
                 </button>
