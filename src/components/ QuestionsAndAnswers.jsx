@@ -63,8 +63,6 @@ class QuestionsAndAnswers extends Component {
     const answer = e.target;
     const incorretas = document.querySelectorAll('.incorrect');
     const corretas = document.querySelectorAll('.correct');
-    console.log(answer);
-    console.log(answer.classList.contains('correct'));
     if (answer.classList.contains('correct')) {
       answer.style.border = '3px solid rgb(6, 240, 15)';
       incorretas.forEach((each) => { each.style.border = '3px solid red'; });
