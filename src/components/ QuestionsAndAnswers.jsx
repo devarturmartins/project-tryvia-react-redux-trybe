@@ -13,6 +13,7 @@ class QuestionsAndAnswers extends Component {
     index: 0,
     random: [],
     second: 30,
+    next: false,
   };
 
   componentDidMount() {
@@ -59,11 +60,12 @@ class QuestionsAndAnswers extends Component {
     this.setState({ random: arrayEmbaralhado });
   };
 
-  // nextQuestion = () => {
-  //   this.setState((prev) => ({
-  //     index: prev.index + 1,
-  //   }), () => this.criarBotõesAleatorios());
-  // };
+  nextQuestion = () => {
+    this.setState((prev) => ({
+      index: prev.index + 1,
+      next: false,
+    }), () => this.criarBotõesAleatorios());
+  };
 
   decorateQuestion = (e) => {
     const answer = e.target;
@@ -76,6 +78,7 @@ class QuestionsAndAnswers extends Component {
       corretas[0].style.border = '3px solid rgb(6, 240, 15)';
       incorretas.forEach((each) => { each.style.border = '3px solid red'; });
     }
+    this.setState({ next: true });
   };
 
   // Requisito 8
@@ -91,7 +94,7 @@ class QuestionsAndAnswers extends Component {
   };
 
   render() {
-    const { game, loading, index, random, second } = this.state;
+    const { game, loading, index, random, second, next } = this.state;
     const { results } = game;
     return (
       <div>
@@ -147,6 +150,15 @@ class QuestionsAndAnswers extends Component {
             {second}
           </p>
         </div>
+        <br />
+        { next && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+          >
+            Next
+          </button>)}
       </div>
     );
   }
