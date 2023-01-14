@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { questionsApi } from '../services/fetchAPI';
+// import Timer from './Timer';
+
+const ONE_SECOND = 1000;
+const ZERO = 0;
 
 class QuestionsAndAnswers extends Component {
   state = {
@@ -8,10 +12,13 @@ class QuestionsAndAnswers extends Component {
     loading: false,
     index: 0,
     random: [],
+    second: 30,
+    next: false,
   };
 
   componentDidMount() {
     this.apiRequest();
+    this.startTimer();
   }
 
   apiRequest = async () => {
@@ -56,11 +63,38 @@ class QuestionsAndAnswers extends Component {
   nextQuestion = () => {
     this.setState((prev) => ({
       index: prev.index + 1,
+      next: false,
     }), () => this.criarBotõesAleatorios());
   };
 
+  decorateQuestion = (e) => {
+    const answer = e.target;
+    const incorretas = document.querySelectorAll('.incorrect');
+    const corretas = document.querySelectorAll('.correct');
+    if (answer.classList.contains('correct')) {
+      answer.style.border = '3px solid rgb(6, 240, 15)';
+      incorretas.forEach((each) => { each.style.border = '3px solid red'; });
+    } else {
+      corretas[0].style.border = '3px solid rgb(6, 240, 15)';
+      incorretas.forEach((each) => { each.style.border = '3px solid red'; });
+    }
+    this.setState({ next: true });
+  };
+
+  // Requisito 8
+  startTimer = () => {
+    this.intervalId = setInterval(() => {
+      const { second } = this.state;
+      if (second === ZERO) {
+        clearInterval(this.intervalId);
+        return;
+      }
+      this.setState((prevState) => ({ second: prevState.second - 1 }));
+    }, ONE_SECOND);
+  };
+
   render() {
-    const { game, loading, index, random } = this.state;
+    const { game, loading, index, random, second, next } = this.state;
     const { results } = game;
     return (
       <div>
@@ -88,25 +122,43 @@ class QuestionsAndAnswers extends Component {
               e === game.results[index].correct_answer ? (
                 <button
                   key={ ind }
-                  onClick={ this.nextQuestion }
+                  onClick={ this.decorateQuestion }
                   type="button"
                   data-testid="correct-answer"
+                  disabled={ second === ZERO }
+                  className="correct"
                 >
                   { e }
                 </button>
               ) : (
                 <button
                   key={ ind }
-                  onClick={ this.nextQuestion }
+                  onClick={ this.decorateQuestion }
                   type="button"
                   data-testid={ `wrong-answer-${index}` }
+                  disabled={ second === ZERO }
+                  className="incorrect"
                 >
                   { e }
                 </button>
               )
             ))
           }
+          {/* <p><Timer /></p> */}
+          <p>
+            Timer:
+            {second}
+          </p>
         </div>
+        <br />
+        { next && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+          >
+            Next
+          </button>)}
       </div>
     );
   }
