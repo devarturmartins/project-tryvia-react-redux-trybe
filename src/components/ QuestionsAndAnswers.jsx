@@ -93,6 +93,22 @@ class QuestionsAndAnswers extends Component {
     }, ONE_SECOND);
   };
 
+  // Req 15:
+  initialPage = () => {
+    const { data } = this.props;
+    const { history } = data;
+
+    history.push('/');
+  };
+
+  // req 16
+  rankingPage = () => {
+    const { data } = this.props;
+    const { history } = data;
+
+    history.push('/ranking');
+  };
+
   render() {
     const { game, loading, index, random, second, next } = this.state;
     const { results } = game;
@@ -159,6 +175,23 @@ class QuestionsAndAnswers extends Component {
           >
             Next
           </button>)}
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ this.rankingPage }
+        >
+          Ranking
+
+        </button>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ this.initialPage }
+        >
+          Play Again
+
+        </button>
+
       </div>
     );
   }
