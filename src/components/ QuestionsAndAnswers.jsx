@@ -97,7 +97,6 @@ class QuestionsAndAnswers extends Component {
   initialPage = () => {
     const { data } = this.props;
     const { history } = data;
-
     history.push('/');
   };
 
@@ -105,7 +104,6 @@ class QuestionsAndAnswers extends Component {
   rankingPage = () => {
     const { data } = this.props;
     const { history } = data;
-
     history.push('/ranking');
   };
 
