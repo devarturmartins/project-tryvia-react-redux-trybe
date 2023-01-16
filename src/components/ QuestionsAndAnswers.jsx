@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { scorePersonal } from '../redux/actions';
 import { questionsApi } from '../services/fetchAPI';
 // import Timer from './Timer';
 
@@ -52,19 +54,31 @@ class QuestionsAndAnswers extends Component {
 
   criarBotõesAleatorios = () => {
     const { index, game } = this.state;
+    // const { data } = this.props;
+    // const { history } = data;
     const { results } = game;
     const arrayDeIncorretos = results?.[index].incorrect_answers;
     const arrayDeCorretos = results?.[index].correct_answer;
     const allArrays = [...arrayDeIncorretos, arrayDeCorretos];
     const arrayEmbaralhado = this.shuffle(allArrays);
     this.setState({ random: arrayEmbaralhado });
+    // if (index > 4) {
+    //   history.push('/feedback');
+    // }
   };
 
   nextQuestion = () => {
     this.setState((prev) => ({
       index: prev.index + 1,
       next: false,
+      second: 30,
     }), () => this.criarBotõesAleatorios());
+    const incorretas = document.querySelectorAll('.incorrect');
+    const corretas = document.querySelectorAll('.correct');
+    incorretas.forEach((each) => { each.removeAttribute('style'); });
+    // corretas[0].style.border = '3px solid purple';
+    corretas[0].removeAttribute('style');
+    this.startTimer();
   };
 
   decorateQuestion = (e) => {
@@ -79,6 +93,8 @@ class QuestionsAndAnswers extends Component {
       incorretas.forEach((each) => { each.style.border = '3px solid red'; });
     }
     this.setState({ next: true });
+    clearInterval(this.intervalId);
+    this.scoreFunction(e);
   };
 
   // Requisito 8
@@ -91,6 +107,43 @@ class QuestionsAndAnswers extends Component {
       }
       this.setState((prevState) => ({ second: prevState.second - 1 }));
     }, ONE_SECOND);
+  };
+
+  // Req 15:
+  initialPage = () => {
+    const { data } = this.props;
+    const { history } = data;
+    history.push('/');
+  };
+
+  // req 16
+  rankingPage = () => {
+    const { data } = this.props;
+    const { history } = data;
+    history.push('/ranking');
+  };
+
+  // req 9
+  scoreFunction = ({ target }) => {
+    // console.log(target.innerText);
+    const { dispatch } = this.props;
+    const { second, game, index } = this.state;
+    const { results } = game;
+    const DEZ = 10;
+    const DOIS = 2;
+    const TRES = 3;
+    let score = 0;
+    if (results[index].correct_answer === target.innerText) {
+      if (results[index].difficulty === 'easy') {
+        score = score + DEZ + (second);
+      } else if (results[index].difficulty === 'medium') {
+        score = score + DEZ + (second * DOIS);
+      } else {
+        score = score + DEZ + (second * TRES);
+      }
+      dispatch(scorePersonal(score));
+      console.log(score);
+    }
   };
 
   render() {
@@ -159,6 +212,23 @@ class QuestionsAndAnswers extends Component {
           >
             Next
           </button>)}
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ this.rankingPage }
+        >
+          Ranking
+
+        </button>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ this.initialPage }
+        >
+          Play Again
+
+        </button>
+
       </div>
     );
   }
@@ -170,6 +240,7 @@ QuestionsAndAnswers.propTypes = {
       push: PropTypes.func.isRequired,
     }).isRequired,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
-export default QuestionsAndAnswers;
+export default connect()(QuestionsAndAnswers);
