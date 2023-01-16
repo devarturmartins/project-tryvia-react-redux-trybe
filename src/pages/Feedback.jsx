@@ -40,7 +40,6 @@ class Feedback extends Component {
             onClick={ this.rankingPage }
           >
             Ranking
-
           </button>
           <button
             type="button"
