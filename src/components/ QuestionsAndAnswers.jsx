@@ -54,21 +54,19 @@ class QuestionsAndAnswers extends Component {
 
   criarBotõesAleatorios = () => {
     const { index, game } = this.state;
-    const { data } = this.props;
-    const { history } = data;
     const { results } = game;
-    const questionNumber = 4;
     const arrayDeIncorretos = results?.[index].incorrect_answers;
     const arrayDeCorretos = results?.[index].correct_answer;
     const allArrays = [...arrayDeIncorretos, arrayDeCorretos];
     const arrayEmbaralhado = this.shuffle(allArrays);
     this.setState({ random: arrayEmbaralhado });
-    if (index > questionNumber) {
-      history.push('/feedback');
-    }
   };
 
   nextQuestion = () => {
+    const { index } = this.state;
+    const { data } = this.props;
+    const { history } = data;
+    const questionNumber = 3;
     this.setState((prev) => ({
       index: prev.index + 1,
       next: false,
@@ -80,6 +78,9 @@ class QuestionsAndAnswers extends Component {
     // corretas[0].style.border = '3px solid purple';
     corretas[0].removeAttribute('style');
     this.startTimer();
+    if (index > questionNumber) {
+      history.push('/feedback');
+    }
   };
 
   decorateQuestion = (e) => {
